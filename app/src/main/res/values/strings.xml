@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Landmark Remark</string>
+    <string name="welcome_to_landmark_remark_app">Welcome to Landmark Remark App</string>
+    <string name="please_enter_your_user_name">Please enter your user name</string>
+    <string name="next_btn">Next</string>
+    <string name="search_hint">Search</string>
+    <string name="save_my_location_mark_btn">Save my location mark</string>
+    <string name="can_not_be_blank_message">User can not be blank!</string>
+    <string name="insert_data_successfully_message">Good job! your mark was saved successfully</string>
+    <string name="insert_data_failed_message">Ops... Something bad occurred, please try again later</string>
+    <string name="no_data_found_message">Sorry, we did not find anything related in our database</string>
+    <string name="location_refuse_message">We need your location to proceed, please try again</string>
+    <string name="validation_notes">Sorry my friend, you have to put some notes before save it.</string>
+    <string name="dialog_title">Leave your notes below!</string>
+</resources>
