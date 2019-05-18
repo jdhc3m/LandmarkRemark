@@ -2,6 +2,7 @@ package com.example.landmarkremark.map
 
 import com.example.landmarkremark.remote.entity.MapEntity
 
+// This is a contract that the application uses as part of the MVP Architecture
 interface MapContract {
 
     interface View  {
@@ -10,6 +11,7 @@ interface MapContract {
         fun showSuccessDataSaved()
         fun showFailureMessage()
         fun queriedDataNotFound()
+        fun showNotInternetConnectionMessage()
         fun showRealTimeUpdates(userUpdatedList: ArrayList<MapEntity>)
     }
 

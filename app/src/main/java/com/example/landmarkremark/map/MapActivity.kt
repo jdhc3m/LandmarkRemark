@@ -16,8 +16,6 @@ import com.google.android.gms.maps.model.MarkerOptions
 import android.content.pm.PackageManager
 import android.support.v4.content.ContextCompat
 import android.support.v4.app.ActivityCompat
-import com.google.android.libraries.places.compat.PlaceDetectionClient
-import com.google.android.libraries.places.compat.Places
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -25,16 +23,13 @@ import android.location.Location
 import android.provider.SettingsSlicesContract.KEY_LOCATION
 import android.widget.EditText
 import com.google.android.gms.maps.model.CameraPosition
-import android.content.Intent
 import android.view.MenuItem
 import com.example.landmarkremark.R
-import com.example.landmarkremark.main.MainActivity
 
 
 class MapActivity : BaseActivity(), MapContract.View, OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
-
 
     private lateinit var mUserName: String
 
@@ -85,11 +80,11 @@ class MapActivity : BaseActivity(), MapContract.View, OnMapReadyCallback {
         // it will setup a listener to update the app if any chance occurs on the Database
         mPresenter.setRealTimeUpdates()
         setupListeners()
-
     }
 
     override fun onStop() {
         super.onStop()
+        mapProgressBar.visibility = View.GONE
         mPresenter.detachView()
     }
 
@@ -185,7 +180,7 @@ class MapActivity : BaseActivity(), MapContract.View, OnMapReadyCallback {
         mPresenter.getMapData()
     }
 
-    // This is a return function for queries
+    // This is a return of the search option
     override fun showMapData(mapData: List<MapEntity>) {
         mMapData = mapData
         mMapData.forEach { mapDetail ->
@@ -197,9 +192,9 @@ class MapActivity : BaseActivity(), MapContract.View, OnMapReadyCallback {
 
         }
         mapProgressBar.visibility = View.GONE
-
     }
 
+    // It adds the marks on the map
     override fun showMapDataSearch(mapData: List<MapEntity>) {
         mMap.clear()
         mapData.forEach { mapDetail ->
@@ -209,6 +204,15 @@ class MapActivity : BaseActivity(), MapContract.View, OnMapReadyCallback {
                     .snippet(mapDetail.notes)
             )
         }
+        //Move Camera for the first found register
+        mMap.moveCamera(
+            CameraUpdateFactory.newLatLngZoom(
+                LatLng(
+                    mMapData[0].latitude,
+                    mMapData[0].longitude
+                ), Constants.Map.DEFAULT_ZOOM.toFloat()
+            )
+        )
         mapProgressBar.visibility = View.GONE
     }
 
@@ -229,6 +233,7 @@ class MapActivity : BaseActivity(), MapContract.View, OnMapReadyCallback {
         }
     }
 
+    // This is a dialog that the application uses to get the notes
     private fun showNotesDialog() {
         val builder = AlertDialog.Builder(this)
         val inflater = layoutInflater
@@ -236,20 +241,14 @@ class MapActivity : BaseActivity(), MapContract.View, OnMapReadyCallback {
         val dialogLayout = inflater.inflate(R.layout.dialog_notes, null)
         val editText = dialogLayout.findViewById<EditText>(R.id.notesEt)
         builder.setView(dialogLayout)
-        builder.setPositiveButton(android.R.string.ok) { dialogInterface, i ->
-            val v = editText.text.toString()
-//            if (v.isNullOrBlank()) {
-//                showToast(getString(R.string.validation_notes))
-//            } else {
+        builder.setPositiveButton(android.R.string.ok) { _, _ ->
+            mapProgressBar.visibility = View.VISIBLE
             mPresenter.saveMark(
                 MapEntity(
                     mUserName, editText.text.toString(),
                     mLastKnownLocation.latitude, mLastKnownLocation.longitude
                 )
             )
-            mapProgressBar.visibility = View.VISIBLE
-//            }
-
         }
         builder.setNegativeButton(android.R.string.cancel) { dialog, p1 ->
             dialog.cancel()
@@ -274,9 +273,13 @@ class MapActivity : BaseActivity(), MapContract.View, OnMapReadyCallback {
         mapProgressBar.visibility = View.GONE
     }
 
+    override fun showNotInternetConnectionMessage() {
+        showToast(getString(R.string.no_internet_message))
+        mapProgressBar.visibility = View.GONE
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val myIntent = Intent(applicationContext, MainActivity::class.java)
-        startActivityForResult(myIntent, 0)
+        onBackPressed()
         return true
     }
 

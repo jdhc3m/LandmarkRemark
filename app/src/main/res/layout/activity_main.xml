@@ -20,7 +20,7 @@
     <EditText
             android:layout_width="256dp"
             android:layout_height="48dp"
-            android:inputType="textPersonName"
+            android:inputType="text"
             android:ems="10"
             android:id="@+id/userNameEt"
             android:hint="@string/please_enter_your_user_name" android:layout_marginEnd="8dp"

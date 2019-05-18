@@ -12,4 +12,5 @@
     <string name="location_refuse_message">We need your location to proceed, please try again</string>
     <string name="validation_notes">Sorry my friend, you have to put some notes before save it.</string>
     <string name="dialog_title">Leave your notes below!</string>
+    <string name="no_internet_message">It seems you do not have connection, please try again later!</string>
 </resources>
