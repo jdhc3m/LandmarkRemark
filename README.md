@@ -27,4 +27,9 @@ I used the latest resources of Google Maps API
 As far as I can see, Firebase does not give the option to make queries with parts of the text, 
 it just can compare entire values, so the query of the application uses the data that it already has.
 But this is not a problem as firebase live date listener always keep the application up to date
+
+*Architecture*
+
+I am using MVP architecture as it is simple to use for a simple app.
+   
    
